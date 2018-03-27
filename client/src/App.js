@@ -16,6 +16,7 @@ class App extends Component {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', artist: '', albumArt: '' }
     }
+    this.millisToMinutesAndSeconds = this.millisToMinutesAndSeconds.bind(this);
   }
   getHashParams() {
     var hashParams = {};
@@ -37,7 +38,10 @@ class App extends Component {
           nowPlaying: { 
               name: response.item.name,
               duration: response.item.duration_ms,
-              artist: response.item.artists[0].name, 
+              artist: response.item.artists[0].name,
+              artistLink: response.item.artists[0].external_urls.spotify, 
+              albumName: response.item.album.name,
+              albumLink: response.item.album.external_urls.spotify,
               albumArt: response.item.album.images[0].url
             }
         });
@@ -54,14 +58,19 @@ class App extends Component {
     return (
       <div className="App">
         <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a>
-        <div>
-          Now Playing: { this.state.nowPlaying.name } by { this.state.nowPlaying.artist }
-          Track Length: { this.state.nowPlaying.duration }
+        <div className="song-info">
+          <div className='album-art'>
+            <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }} />
+          </div>
+          <div className='song-details'>
+            <p>Now Playing:</p> 
+            <p className='song-name'>{this.state.nowPlaying.name}</p>
+            <p className='song-artist'>by <a className='artist-link' href={this.state.nowPlaying.artistLink} target='_blank'>{this.state.nowPlaying.artist}</a></p>
+            <p>on <a href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
+            <p>Duration: {this.millisToMinutesAndSeconds(this.state.nowPlaying.duration)}</p>
+          </div>
         </div>
-        <div>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
-        </div>
-        { this.state.loggedIn &&
+        {this.state.loggedIn &&
           <button onClick={() => this.getNowPlaying()}>
             Check Now Playing
           </button>
