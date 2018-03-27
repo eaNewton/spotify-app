@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'react-moment';
 import './App.css';
 import './css/style.css';
 
@@ -43,6 +44,7 @@ class App extends Component {
               artistLink: response.item.artists[0].external_urls.spotify, 
               albumName: response.item.album.name,
               albumLink: response.item.album.external_urls.spotify,
+              albumReleaseDate: response.item.album.release_date,
               albumArt: response.item.album.images[0].url
             }
         });
@@ -68,6 +70,11 @@ class App extends Component {
             <p className='song-name'>{this.state.nowPlaying.name}</p>
             <p className='song-artist'>by <a className='artist-link' href={this.state.nowPlaying.artistLink} target='_blank'>{this.state.nowPlaying.artist}</a></p>
             <p className='song-album'>on <a className='album-link' href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
+            <p className='album-release'>
+              <Moment format='MMMM DD, YYYY'>
+                {this.state.nowPlaying.albumReleaseDate}
+              </Moment>
+            </p>
             <p>Duration: {this.millisToMinutesAndSeconds(this.state.nowPlaying.duration)}</p>
           </div>
         </div>
