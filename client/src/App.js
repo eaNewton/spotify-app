@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './css/style.css';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
@@ -66,12 +67,12 @@ class App extends Component {
             <p>Now Playing:</p> 
             <p className='song-name'>{this.state.nowPlaying.name}</p>
             <p className='song-artist'>by <a className='artist-link' href={this.state.nowPlaying.artistLink} target='_blank'>{this.state.nowPlaying.artist}</a></p>
-            <p>on <a href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
+            <p className='song-album'>on <a className='album-link' href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
             <p>Duration: {this.millisToMinutesAndSeconds(this.state.nowPlaying.duration)}</p>
           </div>
         </div>
         {this.state.loggedIn &&
-          <button onClick={() => this.getNowPlaying()}>
+          <button id='now-playing' className='button' onClick={() => this.getNowPlaying()}>
             Check Now Playing
           </button>
         }

@@ -4,6 +4,49 @@ body {
   font-family: sans-serif;
 }
 
-.song-name {
-  font-size: 28px;
+.song-info {
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: rgba(60, 69, 125, 0.9);
+  padding: 30px;
+
+  .album-art {
+    display: flex;
+  }
+
+  .song-details {
+    .song-name {
+      color: #fff;
+      font-size: 28px;
+      font-family: Montserrat;
+      font-weight: 700;
+      text-shadow: 0.5px 0.5px 1px #000;
+    }
+
+    .song-artist {
+      .artist-link {
+        color: #fff;
+        font-family: Montserrat;
+        text-decoration: none;
+        transition: 0.1s all ease-in-out;
+
+        &:hover {
+          color: #B1BBEC;
+        }
+      }
+    }
+
+    .song-album {
+      .album-link {
+        color: #fff;
+        font-family: Montserrat;
+        text-decoration: none;
+        transition: 0.1s all ease-in-out;
+
+        &:hover {
+          color: #B1BBEC;
+        }
+      }
+    }
+  }
 }
