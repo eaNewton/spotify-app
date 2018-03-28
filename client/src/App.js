@@ -71,18 +71,20 @@ class App extends Component {
             <p className='song-artist'>by <a className='artist-link' href={this.state.nowPlaying.artistLink} target='_blank'>{this.state.nowPlaying.artist}</a></p>
             <p className='song-album'>on <a className='album-link' href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
             <p className='album-release'>
-              <Moment format='MMMM DD, YYYY'>
+              <Moment format='MMMM D, YYYY'>
                 {this.state.nowPlaying.albumReleaseDate}
               </Moment>
             </p>
             <p>Duration: {this.millisToMinutesAndSeconds(this.state.nowPlaying.duration)}</p>
           </div>
         </div>
-        {this.state.loggedIn &&
-          <button id='now-playing' className='button' onClick={() => this.getNowPlaying()}>
-            Check Now Playing
+        <div className='footer-bar'>
+          {this.state.loggedIn &&
+            <button id='now-playing' className='button' onClick={() => this.getNowPlaying()}>
+              Check Now Playing
           </button>
-        }
+          }
+        </div>
       </div>
     );
   }
