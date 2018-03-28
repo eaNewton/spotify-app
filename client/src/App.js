@@ -60,7 +60,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a>
+        <div className='header-bar'>
+          <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a>
+        </div>
         <div className="song-info">
           <div className='album-art'>
             <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }} />
