@@ -18,6 +18,7 @@ class App extends Component {
       loggedIn: token ? true : false,
       nowPlaying: [{ 
         name: 'Not Checked', 
+        id: null,
         duration: '', 
         artist: '', 
         artistLink: '', 
@@ -25,10 +26,12 @@ class App extends Component {
         albumLink: '',
         albumReleaseDate: '',
         albumArt: ''
-      }]
+      }],
+      prevSongs: []
     }
     this.millisToMinutesAndSeconds = this.millisToMinutesAndSeconds.bind(this);
   }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -44,9 +47,9 @@ class App extends Component {
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
-        console.log(response);
         this.setState({
-          nowPlaying: { 
+          nowPlaying: [{ 
+              id: response.item.id,
               name: response.item.name,
               duration: response.item.duration_ms,
               artist: response.item.artists[0].name,
@@ -55,13 +58,9 @@ class App extends Component {
               albumLink: response.item.album.external_urls.spotify,
               albumReleaseDate: response.item.album.release_date,
               albumArt: response.item.album.images[0].url
-            }
+            }]
         });
       })
-  }
-
-  prevState() {
-
   }
 
   millisToMinutesAndSeconds(millis) {
@@ -70,7 +69,39 @@ class App extends Component {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevState.nowPlaying[0].id);
+    // console.log(prevState);
+    // console.log(prevState === this.state.nowPlaying)
+
+    console.log(this.state.prevSongs)
+
+    if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
+      this.setState({
+        ...this.state,
+        prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
+      })
+
+      console.log(this.state.nowPlaying[0].id);
+    }
+  }
+
   render() {
+    const {nowPlaying} = this.state;
+    // console.log(nowPlaying)
+    // console.log(nowPlaying.length)
+    const current = nowPlaying[nowPlaying.length - 1];
+    // if (current !== nowPlaying) {
+    //   this.setState({
+    //     nowPlaying: [...nowPlaying, current]
+    //   })
+    // }
+
+    // console.log(nowPlaying);
+
+    const songList = this.state.prevSongs.reverse();
+    console.log(songList);
+
     return (
       <div className="App">
         <div className='header-bar'>
@@ -78,21 +109,48 @@ class App extends Component {
         </div>
         <div className="song-info">
           <div className='album-art'>
-            <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }} />
+            <img src={current.albumArt} style={{ height: 300 }} />
           </div>
           <div className='song-details'>
             <p>Now Playing:</p> 
-            <p className='song-name'>{this.state.nowPlaying.name}</p>
-            <p className='song-artist'>by <a className='artist-link' href={this.state.nowPlaying.artistLink} target='_blank'>{this.state.nowPlaying.artist}</a></p>
-            <p className='song-album'>on <a className='album-link' href={this.state.nowPlaying.albumLink} target='_blank'>{this.state.nowPlaying.albumName}</a></p>
+            <p className='song-name'>{current.name}</p>
+            <p className='song-artist'>by <a className='artist-link' href={current.artistLink} target='_blank'>{current.artist}</a></p>
+            <p className='song-album'>on <a className='album-link' href={current.albumLink} target='_blank'>{current.albumName}</a></p>
             <p className='album-release'>
               <Moment format='MMMM D, YYYY'>
-                {this.state.nowPlaying.albumReleaseDate}
+                {current.albumReleaseDate}
               </Moment>
             </p>
-            <p>Duration: {this.millisToMinutesAndSeconds(this.state.nowPlaying.duration)}</p>
+            <p>Duration: {this.millisToMinutesAndSeconds(current.duration)}</p>
           </div>
         </div>
+
+        <div className='history-list'>
+          {
+            this.state.prevSongs.map((song, i) => {
+            if (song.name !== current.name) {
+              return (
+                <div className='song-info' key={i}>
+                  <div className='album-art'>
+                    <img src={song.albumArt} style={{ height: 300 }} />
+                  </div>
+                  <div className='song-details'>
+                    <p className='song-name'>{song.name}</p>
+                    <p className='song-artist'>by <a className='artist-link' href={song.artistLink}>{song.artist}</a></p>
+                    <p className='song-album'>on <a className='album-link' href={song.albumLink}>{song.albumName}</a></p>
+                    <p className='album-release'>
+                      <Moment format='MMMM D, YYYY'>
+                        {song.albumReleaseDate}
+                      </Moment>
+                    </p>
+                    <p>Duration: {this.millisToMinutesAndSeconds(song.duration)}</p>
+                  </div>
+                </div>
+              )
+            }
+          })}
+        </div>
+
         <div className='footer-bar'>
           {this.state.loggedIn &&
             <button id='now-playing' className='button' onClick={() => this.getNowPlaying()}>

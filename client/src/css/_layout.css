@@ -7,9 +7,8 @@ body, p {
 
 .site-wrapper {
   max-width: 100%;
-  height: 100vh;
-  margin: 0;
-  margin-top: 75px;
+  height: 100%;
+  margin: 75px 0;
   padding: 60px;
 
   @media (min-width: 425px) and (max-width: 554px) {
@@ -22,8 +21,9 @@ body, p {
 }
 
 .song-info {
-  width: 85%;
+  width: 70%;
   margin: 0 auto;
+  margin-bottom: 30px;
   padding: 30px;
   display: grid;
   grid-template-columns: 1fr 1fr;
