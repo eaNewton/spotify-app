@@ -61,6 +61,10 @@ body, p {
       font-family: Montserrat;
       font-weight: 700;
       text-shadow: 0.5px 0.5px 1px #3C457D;
+
+      @media (min-width: 960px) {
+        font-size: 44px;
+      }
     }
 
     .song-artist {
@@ -74,6 +78,10 @@ body, p {
           color: #B1BBEC;
         }
       }
+
+      @media (min-width: 960px) {
+        font-size: 28px;
+      }
     }
 
     .song-album {
@@ -86,6 +94,10 @@ body, p {
         &:hover {
           color: #B1BBEC;
         }
+      }
+
+      @media (min-width: 960px) {
+        font-size: 28px;
       }
     }
 
