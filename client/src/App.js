@@ -16,7 +16,16 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', artist: '', albumArt: '' }
+      nowPlaying: [{ 
+        name: 'Not Checked', 
+        duration: '', 
+        artist: '', 
+        artistLink: '', 
+        albumName: '',
+        albumLink: '',
+        albumReleaseDate: '',
+        albumArt: ''
+      }]
     }
     this.millisToMinutesAndSeconds = this.millisToMinutesAndSeconds.bind(this);
   }
@@ -49,6 +58,10 @@ class App extends Component {
             }
         });
       })
+  }
+
+  prevState() {
+
   }
 
   millisToMinutesAndSeconds(millis) {
