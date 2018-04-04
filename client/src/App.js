@@ -69,6 +69,10 @@ class App extends Component {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
+  componentDidMount() {
+    this.getNowPlaying();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     this.getNowPlaying();
 
