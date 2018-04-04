@@ -37,7 +37,7 @@ body, p {
   padding: 30px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background-color: rgba(60, 69, 125, 0.8);
+  background-color: rgba(50, 53, 69, 0.8);
   border-radius: 5px;
 
   .album-art {
