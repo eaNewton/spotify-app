@@ -109,7 +109,7 @@ class App extends Component {
         </div>
         <div className="song-info">
           <div className='album-art'>
-            <img src={current.albumArt} style={{ height: 300 }} />
+            <img src={current.albumArt} alt={current.albumName} style={{ height: 300 }} />
           </div>
           <div className='song-details'>
             <p>Now Playing:</p> 
@@ -128,26 +128,26 @@ class App extends Component {
         <div className='history-list'>
           {
             this.state.prevSongs.map((song, i) => {
-            if (song.name !== current.name) {
               return (
-                <div className='song-info' key={i}>
-                  <div className='album-art'>
-                    <img src={song.albumArt} style={{ height: 300 }} />
+                (song.name !== current.name) ? 
+                  <div className='song-info' key={i}>
+                    <div className='album-art'>
+                      <img src={song.albumArt} alt={current.albumName} style={{ height: 300 }} />
+                    </div>
+                    <div className='song-details'>
+                      <p className='song-name'>{song.name}</p>
+                      <p className='song-artist'>by <a className='artist-link' href={song.artistLink}>{song.artist}</a></p>
+                      <p className='song-album'>on <a className='album-link' href={song.albumLink}>{song.albumName}</a></p>
+                      <p className='album-release'>
+                        <Moment format='MMMM D, YYYY'>
+                          {song.albumReleaseDate}
+                        </Moment>
+                      </p>
+                      <p>Duration: {this.millisToMinutesAndSeconds(song.duration)}</p>
+                    </div>
                   </div>
-                  <div className='song-details'>
-                    <p className='song-name'>{song.name}</p>
-                    <p className='song-artist'>by <a className='artist-link' href={song.artistLink}>{song.artist}</a></p>
-                    <p className='song-album'>on <a className='album-link' href={song.albumLink}>{song.albumName}</a></p>
-                    <p className='album-release'>
-                      <Moment format='MMMM D, YYYY'>
-                        {song.albumReleaseDate}
-                      </Moment>
-                    </p>
-                    <p>Duration: {this.millisToMinutesAndSeconds(song.duration)}</p>
-                  </div>
-                </div>
+                : ''
               )
-            }
           })}
         </div>
 
