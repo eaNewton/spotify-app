@@ -70,19 +70,13 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.nowPlaying[0].id);
-    // console.log(prevState);
-    // console.log(prevState === this.state.nowPlaying)
-
-    console.log(this.state.prevSongs)
+    this.getNowPlaying();
 
     if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
       this.setState({
         ...this.state,
         prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
       })
-
-      console.log(this.state.nowPlaying[0].id);
     }
   }
 
