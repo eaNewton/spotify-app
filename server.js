@@ -1,3 +1,8 @@
+// import environmental variables from our variables.env file
+require('dotenv').config({ path: 'variables.env' });
+
+console.log(process.env.CLIENT_ID);
+
 const express = require('express');
 
 const app = express();

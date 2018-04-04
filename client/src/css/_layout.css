@@ -20,6 +20,16 @@ body, p {
   }
 }
 
+.not-logged-in a {
+  text-decoration: none;
+  color: white;
+  transition: 0.2s all ease-in-out;
+
+  &:hover {
+    color: #B1BBEC;
+  }
+}
+
 .song-info {
   width: 70%;
   margin: 0 auto;

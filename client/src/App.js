@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Moment from 'react-moment';
 import './App.css';
 import './css/style.css';
 import Song from './components/Song.js';
@@ -101,7 +100,7 @@ class App extends Component {
 
     // console.log(nowPlaying);
 
-    const songList = this.state.prevSongs.reverse();
+    // const songList = this.state.prevSongs.reverse();
     
     // console.log(songList);
 
@@ -110,7 +109,14 @@ class App extends Component {
         <div className='header-bar'>
           <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a>
         </div>
-        <Song details={this.state.nowPlaying[0]} duration={this.millisToMinutesAndSeconds} />
+        
+        <div>
+          {
+            this.state.loggedIn ?
+              <Song details={this.state.nowPlaying[0]} duration={this.millisToMinutesAndSeconds} />
+              : <div className='not-logged-in'>No user currently logged in. <a href='http://localhost:8888'>Log in</a> to check Now Playing.</div>
+          }
+        </div>
 
         {/* <Song details={song} duration={this.millisToMinutesAndSeconds} /> */}
 
@@ -119,7 +125,7 @@ class App extends Component {
             this.state.prevSongs.map((song, i) => {
               return (
                 (song.name !== current.name) ? 
-                  <Song details={song} duration={this.millisToMinutesAndSeconds} />
+                  <Song key={i} details={song} duration={this.millisToMinutesAndSeconds} />
                 : ''
               )
           })}
