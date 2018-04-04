@@ -28,7 +28,8 @@ class App extends Component {
         albumReleaseDate: '',
         albumArt: ''
       }],
-      prevSongs: []
+      prevSongs: [],
+      didUpdate: false
     }
     this.millisToMinutesAndSeconds = this.millisToMinutesAndSeconds.bind(this);
   }
@@ -48,7 +49,9 @@ class App extends Component {
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
+        // console.log(response)
         this.setState({
+          ...this.state,
           nowPlaying: [{ 
               id: response.item.id,
               name: response.item.name,
@@ -70,25 +73,23 @@ class App extends Component {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
+  componentDidMount() {
+    this.getNowPlaying();
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.nowPlaying[0].id);
-    // console.log(prevState);
-    // console.log(prevState === this.state.nowPlaying)
-
-    console.log(this.state.prevSongs)
-
     if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
+            
       this.setState({
         ...this.state,
         prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
       })
-
-      console.log(this.state.nowPlaying[0].id);
     }
   }
 
   render() {
     const {nowPlaying} = this.state;
+    // console.log(nowPlaying)
     // console.log(nowPlaying)
     // console.log(nowPlaying.length)
     const current = nowPlaying[nowPlaying.length - 1];
@@ -101,7 +102,8 @@ class App extends Component {
     // console.log(nowPlaying);
 
     const songList = this.state.prevSongs.reverse();
-    console.log(songList);
+    
+    // console.log(songList);
 
     return (
       <div className="App">
