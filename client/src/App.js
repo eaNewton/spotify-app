@@ -16,6 +16,10 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
+      user: [{
+        name: '',
+        email: ''
+      }],
       nowPlaying: [{ 
         name: 'Not Checked', 
         id: null,
@@ -45,10 +49,23 @@ class App extends Component {
     return hashParams;
   }
 
+  getCurrentUser() {
+    spotifyApi.getMe()
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          user: [{
+            name: res.display_name,
+            email: res.email
+          }]
+        })
+      })
+  }
+
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
-        // console.log(response)
+        console.log(response)
         this.setState({
           ...this.state,
           nowPlaying: [{ 
@@ -73,6 +90,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getCurrentUser();
     this.getNowPlaying();
   }
 
@@ -107,7 +125,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className='header-bar'>
-          <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a>
+          {!this.state.loggedIn ? 
+          <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a> :
+          `Welcome ${this.state.user[0].name}`
+          }
         </div>
         
         <div>
