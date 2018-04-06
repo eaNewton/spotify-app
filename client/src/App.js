@@ -3,6 +3,10 @@ import './App.css';
 import './css/style.css';
 import Song from './components/Song.js';
 
+import fontawesome from '@fortawesome/fontawesome';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {faUserCircle} from '@fortawesome/fontawesome-free-regular';
+
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -18,7 +22,8 @@ class App extends Component {
       loggedIn: token ? true : false,
       user: [{
         name: '',
-        email: ''
+        email: '',
+        id: ''
       }],
       nowPlaying: [{ 
         name: 'Not Checked', 
@@ -52,11 +57,13 @@ class App extends Component {
   getCurrentUser() {
     spotifyApi.getMe()
       .then((res) => {
+        console.log(res);
         this.setState({
           ...this.state,
           user: [{
             name: res.display_name,
-            email: res.email
+            email: res.email,
+            id: res.id
           }]
         })
       })
@@ -106,28 +113,16 @@ class App extends Component {
 
   render() {
     const {nowPlaying} = this.state;
-    // console.log(nowPlaying)
-    // console.log(nowPlaying)
-    // console.log(nowPlaying.length)
     const current = nowPlaying[nowPlaying.length - 1];
-    // if (current !== nowPlaying) {
-    //   this.setState({
-    //     nowPlaying: [...nowPlaying, current]
-    //   })
-    // }
-
-    // console.log(nowPlaying);
-
-    // const songList = this.state.prevSongs.reverse();
     
-    // console.log(songList);
+    const name = this.state.user[0].name ? this.state.user[0].name : this.state.user[0].id;
 
     return (
       <div className="App">
         <div className='header-bar'>
           {!this.state.loggedIn ? 
           <a id='login' className='button' href='http://localhost:8888' > Login to Spotify </a> :
-          `Welcome ${this.state.user[0].name}`
+            [<FontAwesomeIcon icon={faUserCircle} />, " ", name]
           }
         </div>
         
