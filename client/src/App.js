@@ -97,17 +97,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getCurrentUser();
-    this.getNowPlaying();
+    if (this.state.loggedIn) {
+      this.getCurrentUser();
+      this.getNowPlaying();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
-            
-      this.setState({
-        ...this.state,
-        prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
-      })
+    if (this.state.loggedIn) {
+      if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
+
+        this.setState({
+          ...this.state,
+          prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
+        })
+      }
     }
   }
 
