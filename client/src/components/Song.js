@@ -1,5 +1,6 @@
 import React from 'react';
 import Moment from 'react-moment';
+import { millisToMinutesAndSeconds } from '../javascripts/functions';
 
 const Song = (props) => {
   return(
@@ -17,7 +18,7 @@ const Song = (props) => {
             {props.details.albumReleaseDate}
           </Moment>
         </p>
-        <p>Duration: {props.duration(props.details.duration)}</p>
+        <p>Duration: {millisToMinutesAndSeconds(props.details.duration)}</p>
       </div>
     </div>
   );
