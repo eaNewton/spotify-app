@@ -39,7 +39,6 @@ class App extends Component {
       prevSongs: [],
       didUpdate: false
     }
-    this.millisToMinutesAndSeconds = this.millisToMinutesAndSeconds.bind(this);
   }
 
   getHashParams() {
@@ -69,6 +68,8 @@ class App extends Component {
       })
   }
 
+  // Figure out what to do if user's Spotify session isn't active when logging into the app
+
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
@@ -90,24 +91,22 @@ class App extends Component {
       })
   }
 
-  millisToMinutesAndSeconds(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  }
-
   componentDidMount() {
-    this.getCurrentUser();
-    this.getNowPlaying();
+    if (this.state.loggedIn) {
+      this.getCurrentUser();
+      this.getNowPlaying();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
-            
-      this.setState({
-        ...this.state,
-        prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
-      })
+    if (this.state.loggedIn) {
+      if (prevState.nowPlaying[0].id !== this.state.nowPlaying[this.state.nowPlaying.length-1].id) {
+
+        this.setState({
+          ...this.state,
+          prevSongs: this.state.prevSongs.concat(this.state.nowPlaying)
+        })
+      }
     }
   }
 
@@ -129,19 +128,19 @@ class App extends Component {
         <div>
           {
             this.state.loggedIn ?
-              <Song details={this.state.nowPlaying[0]} duration={this.millisToMinutesAndSeconds} />
+              <Song details={this.state.nowPlaying[0]} />
               : <div className='not-logged-in'>No user currently logged in. <a href='http://localhost:8888'>Log in</a> to check Now Playing.</div>
           }
         </div>
 
-        {/* <Song details={song} duration={this.millisToMinutesAndSeconds} /> */}
+        {/* <Song details={song} /> */}
 
         <div className='history-list'>
           {
             this.state.prevSongs.map((song, i) => {
               return (
                 (song.name !== current.name) ? 
-                  <Song key={i} details={song} duration={this.millisToMinutesAndSeconds} />
+                  <Song key={i} details={song} />
                 : ''
               )
           })}
